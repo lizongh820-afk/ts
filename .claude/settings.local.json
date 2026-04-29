@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip show *)",
+      "Bash(python -c \"from autogen import AssistantAgent; help\\(AssistantAgent.__init__\\)\")",
+      "Bash(pip install *)",
+      "Bash(python -c \"import autogen; print\\(dir\\(autogen\\)\\)\")",
+      "Bash(python *)",
+      "mcp__excalidraw__clear_canvas",
+      "mcp__excalidraw__create_from_mermaid"
+    ]
+  }
+}

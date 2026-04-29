@@ -1,0 +1,22 @@
+
+============================================================
+  角色对话系统 v2 - 双层智能体架构
+============================================================
+
+内核层：大纲架构师 → 分镜设计师 → 场景塑造师 → 人物细节师 → 世界观架构师 → 总编审
+角色层：Echo（代号）, XR-7（地球代号：老夏）, 小毒, 柳如烟, 沈孤鸿, 网事叔, 钟不移, 阿七
+Traceback (most recent call last):
+  File "D:\Projects\ts\角色对话系统\main.py", line 205, in <module>
+    asyncio.run(main())
+  File "C:\Users\27427\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\27427\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\27427\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\Projects\ts\角色对话系统\main.py", line 79, in main
+    print(f"状态管理：内核层动态更新角色提示词 \u2713")
+UnicodeEncodeError: 'gbk' codec can't encode character '\u2713' in position 18: illegal multibyte sequence
