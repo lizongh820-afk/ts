@@ -154,7 +154,7 @@ class KernelPipeline:
     """内核规划流水线"""
 
     def __init__(self, api_key: str, base_url: str, model: str):
-        self.client = AsyncOpenAI(api_key=api_key, base_url=base_url)
+        self.client = AsyncOpenAI(api_key=api_key, base_url=base_url, max_retries=8)
         self.model = model
         self.system_prompts = SYSTEM_PROMPTS
 

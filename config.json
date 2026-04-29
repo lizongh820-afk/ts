@@ -1,0 +1,39 @@
+{
+  "python_path": "C:/Users/27823/python-sdk/python3.13.2/python.exe",
+  "project_dir": "D:\\Project\\ts",
+  "log_file": "run_output.log",
+  "script_filter": "对话",
+  "active_provider": "glm",
+  "providers": {
+    "glm": {
+      "env_key": "GLM_API_KEY",
+      "api_key": "a7c440b626144a349993666356cdd74a.DpyYjq64DqJhtnJp",
+      "base_url": "https://open.bigmodel.cn/api/paas/v4",
+      "model": "glm-4.7-flash",
+      "family": "glm"
+    },
+    "deepseek": {
+      "env_key": "DEEPSEEK_API_KEY",
+      "api_key": "",
+      "base_url": "https://api.deepseek.com/v1",
+      "model": "deepseek-chat",
+      "family": "deepseek"
+    },
+    "anthropic": {
+      "env_key": "ANTHROPIC_AUTH_TOKEN",
+      "api_key": "",
+      "base_url": "https://api.deepseek.com/v1",
+      "model": "deepseek-chat",
+      "family": "deepseek"
+    }
+  },
+  "role_dir": "角色提示词",
+  "state_dir": "角色状态",
+  "archive_dir": "故事存档",
+  "max_scenes": 10,
+  "max_turns": 12,
+  "max_turns_simple": 8,
+  "max_active_roles": 4,
+  "retry_max": 3,
+  "retry_delay": 10
+}

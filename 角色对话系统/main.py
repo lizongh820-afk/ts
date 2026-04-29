@@ -15,6 +15,7 @@
 """
 
 import asyncio
+import json
 import os
 import sys
 from pathlib import Path
@@ -25,17 +26,23 @@ from state_manager import StateManager
 from story_archive import StoryArchive
 
 # ---------- 配置 ----------
+CONFIG_PATH = Path(__file__).parent.parent / "config.json"
+_config = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+
 BASE_DIR = Path(__file__).parent
-ROLE_DIR = BASE_DIR.parent / "角色提示词"
-STATE_DIR = BASE_DIR / "角色状态"
-ARCHIVE_DIR = BASE_DIR / "故事存档"
+ROLE_DIR = BASE_DIR.parent / _config["role_dir"]
+STATE_DIR = BASE_DIR / _config["state_dir"]
+ARCHIVE_DIR = BASE_DIR / _config["archive_dir"]
 
-API_KEY = os.environ.get("ANTHROPIC_AUTH_TOKEN") or os.environ.get("DEEPSEEK_API_KEY")
-BASE_URL = "https://api.deepseek.com/v1"
-MODEL_NAME = "deepseek-v4-flash"
+ACTIVE_PROVIDER = os.environ.get("LLM_PROVIDER", _config["active_provider"]).lower()
+_provider = _config["providers"].get(ACTIVE_PROVIDER, _config["providers"][_config["active_provider"]])
+API_KEY = os.environ.get(_provider["env_key"]) or _provider.get("api_key", "")
+BASE_URL = _provider["base_url"]
+MODEL_NAME = _provider["model"]
+MODEL_FAMILY = _provider["family"]
 
-MAX_SCENES = 10
-MAX_TURNS = 12
+MAX_SCENES = _config["max_scenes"]
+MAX_TURNS = _config["max_turns"]
 # -------------------------
 
 
@@ -62,6 +69,7 @@ async def run_new_story(archive: StoryArchive):
         api_key=API_KEY,
         base_url=BASE_URL,
         model=MODEL_NAME,
+        model_family=MODEL_FAMILY,
         state_manager=state_manager,
     )
     all_character_names = character_layer.get_all_display_names()
@@ -115,6 +123,7 @@ async def resume_story(archive: StoryArchive):
         api_key=API_KEY,
         base_url=BASE_URL,
         model=MODEL_NAME,
+        model_family=MODEL_FAMILY,
         state_manager=state_manager,
     )
     all_character_names = character_layer.get_all_display_names()
@@ -271,7 +280,8 @@ async def main():
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
     if not API_KEY:
-        print("错误：请设置 ANTHROPIC_AUTH_TOKEN 环境变量")
+        print(f"错误：请设置环境变量 {_provider['env_key']}（当前提供商：{ACTIVE_PROVIDER}）")
+        print(f"可通过 LLM_PROVIDER 环境变量切换提供商：{', '.join(_config['providers'].keys())}")
         sys.exit(1)
 
     if not ROLE_DIR.exists() or not list(ROLE_DIR.glob("*.md")):

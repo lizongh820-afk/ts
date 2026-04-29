@@ -38,16 +38,17 @@ def parse_role_files(role_dir: Path) -> list[dict]:
     return roles
 
 
-def create_model_client(api_key: str, base_url: str, model: str) -> OpenAIChatCompletionClient:
+def create_model_client(api_key: str, base_url: str, model: str, model_family: str = "deepseek") -> OpenAIChatCompletionClient:
     return OpenAIChatCompletionClient(
         model=model,
         api_key=api_key,
         base_url=base_url,
+        max_retries=8,
         model_info={
             "vision": True,
             "function_calling": True,
             "json_output": True,
-            "family": "deepseek",
+            "family": model_family,
             "structured_output": False,
             "multiple_system_messages": True,
         },
@@ -64,11 +65,13 @@ class CharacterLayer:
         base_url: str,
         model: str,
         state_manager: StateManager,
+        model_family: str = "deepseek",
     ):
         self.role_dir = Path(role_dir)
         self.api_key = api_key
         self.base_url = base_url
         self.model = model
+        self.model_family = model_family
         self.state_manager = state_manager
         self.roles = parse_role_files(self.role_dir)
         self.name_to_id = {r["display_name"]: r["id"] for r in self.roles}
@@ -92,7 +95,7 @@ class CharacterLayer:
         start_with = scene_directive.get("start_with", "")
         decide_entries = scene_directive.get("decide_entries", {})
 
-        model_client = create_model_client(self.api_key, self.base_url, self.model)
+        model_client = create_model_client(self.api_key, self.base_url, self.model, self.model_family)
 
         # 选择登场角色
         active_names = self._decide_active_roles(decide_entries)
